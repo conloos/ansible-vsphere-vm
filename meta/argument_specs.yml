@@ -1,0 +1,150 @@
+argument_specs:
+  main:
+    # https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html#role-argument-validation
+    # https://docs.ansible.com/ansible/latest/dev_guide/developing_program_flow_modules.html#argument-spec
+    short_description: Create ESXi VM.
+    description: Create ESXi VM.
+    author:
+      - Frank Dornheim
+    options:
+      allow_duplicates:
+        type: str
+        description: Whether or not to allow duplicate VM names. ESXi allows duplicates, vCenter may not.
+      cloudinit_fqdn:
+        type: str
+        description: FQDN of the system.
+        required: True
+      ci_download_url: 
+        type: str
+        default: "https://cloud-images.ubuntu.com"
+        description: URL to download image 
+      ci_dist_release_date: 
+        type: str
+        default: "current"
+        description: Versionstag to downlad
+      ci_distname: 
+        type: str
+        description: Distributions version
+      ci_image_name: 
+        type: str
+        description: Image to download eg:"{{ ci_distname }}-server-cloudimg-amd64.ova". Attention currently only vmdk and ova is supported. Other versions may work.
+      ci_cloudimage_url:
+        type: str
+        description: Compound URL to download the image.
+      ci_cloudimage_checksum:
+        type: str
+        description: Compound URL to download the checksumm file to check the image.
+      cloudinit_rendering:
+        type: str
+        default: "var"
+        description: Please use the ansible-cloudimage role. Selection of how the cloud-image data should be rendered.
+      cloudinit_config['user.user-data']:
+        type: str
+        description: Cloud-init user-data
+      cloudinit_config['user.meta-data']:
+        type: str
+        description: Cloud-init meta-data
+      folder:
+        type: str
+        default: "Ansible Managed VMs"
+        description: Folder to deploy the vm in vCenter.
+      resource_pool:
+        type: str
+        description: Resource Pool to deploy to.
+      networks:
+        type: str
+        description: Mapping of OVF network name, to the vCenter network name.
+      vcenter_hostname:
+        type: str
+        description: The hostname or IP address of the vSphere vCenter or ESXi server.
+        required: True
+      vcenter_username:
+        type: str
+        description: The username of the vSphere vCenter or ESXi server.
+        required: True
+      vcenter_password:
+        type: str
+        description: The password of the vSphere vCenter or ESXi server.
+        required: True
+      vcenter_datacenter:
+        type: str
+        description: Datacenter to deploy to.
+        required: True
+      vcenter_cluster:
+        type: str
+        description: Cluster to deploy to.
+        required: True
+      esxi_host_fqdn:
+        type: str
+        description: ESXi Host to deploy to.
+        required: True
+      vcenter_destination_folder:
+        type: str
+        default: "Ansible Managed VMs"
+        description: Absolute path of folder to place the virtual machine.
+      vcenter_validate_certs:
+        type: bool
+        description: Allows connection when SSL certificates are not valid.
+        required: True
+      vm_state: 
+        type: str
+        default: "poweredoff"
+        description:  Define state of the fresh created vm. See at This role starts the vm after updating the vm-parameters. https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_powerstate_module.html#parameter-state
+      vm_guestid: 
+        type: str
+        default: "ubuntu64Guest"
+        description: Define the type of the fresh created vm. See at https://docs.vmware.com/en/VMware-HCX/4.2/hcx-user-guide/GUID-D4FFCBD6-9FEC-44E5-9E26-1BD0A2A81389.html
+      vm_disk_gb:
+        type: int
+        default: 10
+        description: Disk storage size in gb.
+      vm_disk_type:
+        type: str
+        default: "thin"
+        description: Type of disk. See https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_module.html#parameter-disk/type
+      vm_disk_datastore:
+        type: str
+        description: Specify datastore or datastore cluster to provision virtual machine.
+        required: True
+      vm_hw_ram_mb:
+        type: int
+        default: 2048
+        description: Amount of memory in MB.
+      vm_hw_cpu_n:
+        type: int
+        default: 2
+        description: Number of CPUs.
+      vm_hw_scsi:
+        type: str
+        default: "paravirtual"
+        description: SCSI Controllertype
+      vm_net_name:
+        type: str
+        description: Name of the portgroup or distributed virtual portgroup for this interface.
+        required: True
+      vm_net_device_type:
+        type: str
+        default: "vmxnet3"
+        description: Virtual network device. See https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_module.html#parameter-networks/device_type
+      vm_path_to_ova:
+        type: str
+        description: Local FS-path to ova image.
+      vm_allow_duplicates:
+        type: str
+        description: Whether or not to allow duplicate VM names. ESXi allows duplicates, vCenter may not.
+      pyvim_version:
+        type: str
+        default: "3.0.3"
+        description: Version of pyvim.
+      pyvmomi_version:
+        type: str
+        default: "1.0.1"
+        description: Version of pyvmomi. 
+      jmespath_version: 
+        type: str
+        default: "7.0.3"
+        description: Version of pyvmomi to connect to vCenter.
+      ova_rescue_password:
+        type: str
+        default: 'RANDOM'
+        description: rescue password. If cloud-init fais this is the password for default user ubuntu. See https://git.launchpad.net/livecd-rootfs/tree/live-build/ubuntu-cpc/hooks.d/base/ovf/ubuntu-ova-v1-cloudcfg-vmdk.tmpl

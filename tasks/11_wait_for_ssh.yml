@@ -1,0 +1,10 @@
+---
+# Wait till ssh is up to continue
+- name: Wait 300 seconds for port 22 to become open and contain "OpenSSH"
+  ansible.builtin.wait_for:
+    host: '{{ cloudinit_fqdn }}'
+    port: 22
+    delay: 60
+    timeout: 500
+  delegate_to: localhost
+...

@@ -1,0 +1,8 @@
+---
+- name: cleanup temp
+  ansible.builtin.file:
+    path: "{{ tempfilepath.path }}"
+    state: absent
+  delegate_to: localhost
+  when: tempfilepath is defined and tempfilepath['path'] is defined
+...

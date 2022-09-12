@@ -1,0 +1,14 @@
+---
+- name: vmdk - copy image to datastore
+  community.vmware.vsphere_copy:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    src: "{{ tempfilepath.path }}/{{ ci_image_name }}"
+    datacenter: "{{ vcenter_datacenter }}"
+    datastore: "{{ vm_disk_datastore }}"
+    path: "{{ cloudinit_fqdn }}/{{ cloudinit_fqdn }}.vmware-player.vmdk"
+    validate_certs: False
+  delegate_to: localhost
+  when: "{{'.vmdk' in ci_image_name }}"
+...

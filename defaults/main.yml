@@ -1,0 +1,29 @@
+---
+vcenter_destination_folder: "Ansible Managed VMs"
+vcenter_validate_certs: False
+vm_state: "poweredoff" # https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_powerstate_module.html#parameter-state
+vm_guestid: "ubuntu64Guest" # https://docs.vmware.com/en/VMware-HCX/4.2/hcx-user-guide/GUID-D4FFCBD6-9FEC-44E5-9E26-1BD0A2A81389.html
+vm_disk_gb: 10
+vm_disk_type: "thin"
+vm_hw_ram_mb: 2048
+vm_hw_cpu_n: 2
+vm_hw_scsi: "paravirtual"
+vm_net_device_type: "vmxnet3"
+vm_allow_duplicates: False
+
+# choose distribution and source
+ci_download_url: "https://cloud-images.ubuntu.com"
+ci_dist_release_date: "current"
+ci_distname: "jammy"
+# ci_image_name: "{{ ci_distname }}-server-cloudimg-amd64.vmdk"
+ci_image_name: "{{ ci_distname }}-server-cloudimg-amd64.ova"
+ci_cloudimage_url: "{{ ci_download_url }}/{{ ci_distname }}/{{ ci_dist_release_date }}/{{ ci_image_name }}"
+ci_cloudimage_checksum: "{{ ci_download_url }}/{{ ci_distname }}/{{ ci_dist_release_date }}/SHA256SUMS"
+
+# cloud-init have to create a ISO
+cloudinit_rendering: "var"
+
+pyvim_version: "3.0.3"
+pyvmomi_version: "1.0.1"
+jmespath_version: "7.0.3"
+...

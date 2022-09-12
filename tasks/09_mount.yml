@@ -1,0 +1,42 @@
+---
+- name: configure disks
+  tags: configure-vm
+  vmware_guest_disk:
+    hostname: "{{ vcenter_hostname | default(omit) }}"
+    username: "{{ vcenter_username | default(omit) }}"
+    password: "{{ vcenter_password | default(omit) }}"
+    validate_certs: "{{ vcenter_validate_certs | default(omit) }}"
+    datacenter: "{{ vcenter_datacenter }}"
+    name: "{{ cloudinit_fqdn }}"
+    disk: "{{ disk | default(omit) }}"
+    # disk:
+    #   - size_gb: "{{ vm_disk_gb }}"
+    #     type: "{{ vm_disk_type }}"
+    #     datastore: "{{ vm_disk_datastore }}"
+    # disk:
+    #   - filename: "[{{ vm_disk_datastore }}] {{ cloudinit_fqdn }}/{{ cloudinit_fqdn }}.vmdk"
+  delegate_to: localhost
+
+# - name: get Informations about the VM
+#   community.vmware.vmware_vm_info:
+#     hostname: "{{ vcenter_hostname }}"
+#     username: "{{ vcenter_username }}"
+#     password: "{{ vcenter_password }}"
+#     cloudinit_fqdn: "{{ cloudinit_fqdn }}"
+#     # folder: "{{ vcenter_destination_folder }}"
+#     validate_certs: False
+#   delegate_to: localhost
+#   register: vm_info
+
+# - name: mount vmdk by uuid
+#   community.vmware.vmware_guest:
+#     hostname: "{{ vcenter_hostname }}"
+#     username: "{{ vcenter_username }}"
+#     password: "{{ vcenter_password }}"
+#     validate_certs: "{{ vcenter_validate_certs }}"
+#     datacenter: "{{ vcenter_datacenter }}"
+#     uuid: "{{ vm_info.virtual_machines[0]['uuid'] }}"
+#     disk:
+#       - filename: "[{{ vm_disk_datastore }}] {{ cloudinit_fqdn }}/{{ cloudinit_fqdn }}.vmdk"
+#   delegate_to: localhost
+...

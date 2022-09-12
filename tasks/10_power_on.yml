@@ -1,0 +1,13 @@
+---
+- name: start VM
+  tags: start-vm
+  vmware_guest:
+    hostname: "{{ vcenter_hostname | default(omit) }}"
+    username: "{{ vcenter_username | default(omit) }}"
+    password: "{{ vcenter_password | default(omit) }}"
+    validate_certs: "{{ vcenter_validate_certs | default(omit) }}"
+    name: "{{ cloudinit_fqdn }}"
+    state: poweredon
+    wait_for_ip_address: yes
+  delegate_to: localhost
+...

@@ -1,0 +1,55 @@
+---
+# This role tries to assign default values to as many parameters as possible. 
+# If the variable "vm_path_to_ova" is set, the OVA from the local file system is used. 
+# This means that the image was not downloaded and therefore not stored in the tempfile. 
+# The following step ensures that no abort occurs because the variable does not exist.
+- name: set_fact - fix tempfile.path if vm_path_to_ova is defined
+  ansible.builtin.set_fact:
+    tempfilepath: "{{ tempfilepath | default({}) | combine({item.key: item.value}) }}"
+  with_items:
+    - { "key": "fix", "value": True}
+    - { "key": "path", "value": '' }
+  when: tempfilepath['path'] is not defined
+
+- name: deploy OVA file
+  tags: deploy-ova
+  community.vmware.vmware_deploy_ovf:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: "{{ vcenter_validate_certs  }}"
+    datacenter: "{{ vcenter_datacenter }}"
+    datastore: "{{ vm_disk_datastore }}"
+    #cluster: "{{ vcenter_cluster | default(omit) }}"
+    esxi_hostname: "{{ esxi_host_fqdn | default(omit) }}" # fix https://github.com/ansible-collections/community.vmware/pull/687
+    folder: "{{ vcenter_datacenter }}/vm/{{ vcenter_destination_folder| default(omit) }}" # The full path DC/vm/folder have to provide
+    resource_pool: "{{ venter_resource_pool | default(omit) }}"
+    networks: "{u'VM Network':u'{{ vm_net_name }}'}"
+    allow_duplicates: "{{ vm_allow_duplicates | default(omit) }}"
+    disk_provisioning: "{{ vm_disk_type }}"
+    ova: "{{ vm_path_to_ova | default('/'.join((tempfilepath.path, ci_image_name)) ) }}"
+    name: "{{ cloudinit_fqdn }}"
+    inject_ovf_env: True
+    properties:
+      # https://git.launchpad.net/livecd-rootfs/tree/live-build/ubuntu-cpc/hooks.d/base/ovf/ubuntu-ova-v1-cloudcfg-vmdk.tmpl
+      hostname: "{{ cloudinit_fqdn }}"
+      user-data: "{{ cloudinit_config['user.user-data'] | default({}) | b64encode }}"
+      meta-data: "{{ cloudinit_config['user.meta-data'] | default({}) | b64encode }}"
+      # If set to the string 'RANDOM' then a random password will be generated, and written to the console.
+      password: "{{ ova_rescue_password | default('RANDOM') }}" 
+    power_on: "{{ vm_power_on | default(False) | bool }}"
+  delegate_to: localhost
+  when: "{{'.ova' in ci_image_name }}"
+
+# unset the fix above - delete key: path
+- name: set_fact - delete tempfilepath
+  ansible.builtin.set_fact:
+    tempfilepath: '{{ tempfilepath | dict2items | rejectattr("key", "eq", "path") | list | items2dict }}' # delete key: path
+  when: tempfilepath is defined and tempfilepath['path'] is defined
+
+# unset the fix above - delete key: fix
+- name: set_fact - delete tempfilepath
+  ansible.builtin.set_fact:
+    tempfilepath: '{{ tempfilepath | dict2items | rejectattr("key", "eq", "fix") | list | items2dict }}' # delete key: fix
+  when: tempfilepath is defined and tempfilepath['fix'] is defined
+...

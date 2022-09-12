@@ -1,0 +1,29 @@
+---
+- block:
+  - name: installation of necessary packages
+    ansible.builtin.apt:
+      name: '{{ item }}'
+      state: present
+      update_cache: True
+    register: apt_status
+    until: apt_status is success
+    delay: 6
+    retries: 10
+    with_items:
+      - qemu-utils
+      - python-is-python3 # added by switching to ubuntu 22.04
+      - python3-pip
+    environment:
+      DEBIAN_FRONTEND: noninteractive
+    delegate_to: localhost
+
+  - name: install pip modules
+    ansible.builtin.pip:
+      name:
+        - "pyvim"=={{pyvim_version}}
+        - "pyvmomi=={{pyvmomi_version}}"
+        - "jmespath=={{jmespath_version}}"
+      delegate_to: localhost
+  delegate_to: localhost
+  become: True
+...
