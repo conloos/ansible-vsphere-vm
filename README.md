@@ -70,30 +70,30 @@ $ ansible-playbook main.yml --vault-pass-file .vault-pass.txt --extra-vars "esx=
 | vm_net_name | Name of the portgroup or distributed virtual portgroup for this interface. | **True** |
 | vcenter_cluster | Cluster to deploy to. You have to change that parameter at: 06a_ova_deploy.yml **You have to specify "vcenter_cluster" or "esxi_hostname"** | **True** or "esxi_hostname" |
 | esxi_host_fqdn | ESXi Host to deploy to. You have to change that parameter at: 06a_ova_deploy.yml **You have to specify "vcenter_cluster" or "esxi_hostname"** | **True** or "vcenter_cluster" |
-| ci_download_url | URL to download image **default: "https://cloud-images.ubuntu.com"** | **false** if path to image is provided by "vm_path_to_ova" |
-| vm_path_to_ova | Local FS-path to ova image. | **false** if URL to image is provided by "ci_download_url" |
-| allow_duplicates | Whether or not to allow duplicate VM names. ESXi allows duplicates, vCenter may not. | false |
-| ci_dist_release_date | Versiontag to downlad **default: "current"** | false |
-| ci_distname | Distributions version **default: "current"** | false |
-| ci_image_name | Image to download eg:"{{ ci_distname }}-server-cloudimg-amd64.ova". Attention currently only **vmdk** and **ova** is supported. Other versions may work. | false |
-| ci_cloudimage_url | Compound URL (by: {{ ci_download_url }}, {{ ci_dist_release_date }} and {{ ci_image_name }}) to download the image. | false |
-| ci_cloudimage_checksum | Compound URL to download the checksumm file to check the image. | false |
-| cloudinit_rendering |  Please use the ansible-cloud-image role. Selection of how the cloud-image data should be rendered. **default: "var"** | false |
-| cloudinit_config['user.user-data'] | Cloud-init user-data | false | 
-| cloudinit_config['user.meta-data'] | Cloud-init meta-data | false |
-| resource_pool | Resource Pool to deploy to. | false |
-| networks | Mapping of OVF network name, to the vCenter network name. **default "{u'VM Network':u'{{ vm_net_name }}'}"** | false |
-| vcenter_destination_folder | Absolute path of folder to place the virtual machine vCenter **default: "Ansible Managed VMs"** | false |
-| vm_state | Define [state](https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_powerstate_module.html#parameter-state) of the fresh created vm. This role starts the vm after updating the vm-parameters. **default: "poweredoff"** | false |
-| vm_guestid | Define the [type](https://docs.vmware.com/en/VMware-HCX/4.2/hcx-user-guide/GUID-D4FFCBD6-9FEC-44E5-9E26-1BD0A2A81389.html) of the fresh created vm. **default: "ubuntu64Guest"** | false |
-| vm_disk_gb | Disk storage size in gb. **default: 10** | false |
-| vm_disk_type | Type of [disk](ttps://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_module.html#parameter-disk/type). **default: "thin"** | false |
-| vm_hw_ram_mb | Amount of memory in MB. **default: 2048** | false |
-| vm_hw_cpu_n | Number of CPUs for the vm. **default: 2** | false |
-| vm_hw_scsi | SCSI Controllertype **default: "paravirtual"** | false |
-| vm_net_device_type | [Virtual network device](https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_module.html#parameter-networks/device_type). **default: "vmxnet3"** | false |
-| vm_allow_duplicates | Whether or not to allow duplicate VM names. ESXi allows duplicates, vCenter may not. **default: False** | false |
-| ova_rescue_password | Set rescue password. If cloud-init fais this is the password for default user ubuntu. See [docs](https://git.launchpad.net/livecd-rootfs/tree/live-build/ubuntu-cpc/hooks.d/base/ovf/ubuntu-ova-v1-cloudcfg-vmdk.tmpl) **default: 'RANDOM'** | false |
+| ci_download_url | URL to download image **default: "https://cloud-images.ubuntu.com"** | **True** if path to image is provided by "vm_path_to_ova" |
+| vm_path_to_ova | Local FS-path to ova image. | **True** if URL to image is provided by "ci_download_url" |
+| allow_duplicates | Whether or not to allow duplicate VM names. ESXi allows duplicates, vCenter may not. | False |
+| ci_dist_release_date | Versiontag to downlad **default: "current"** | False |
+| ci_distname | Distributions version **default: "current"** | False |
+| ci_image_name | Image to download eg:"{{ ci_distname }}-server-cloudimg-amd64.ova". Attention currently only **vmdk** and **ova** is supported. Other versions may work. | False |
+| ci_cloudimage_url | Compound URL (by: {{ ci_download_url }}, {{ ci_dist_release_date }} and {{ ci_image_name }}) to download the image. | False |
+| ci_cloudimage_checksum | Compound URL to download the checksumm file to check the image. | False |
+| cloudinit_rendering |  Please use the ansible-cloud-image role. Selection of how the cloud-image data should be rendered. **default: "var"** | False |
+| cloudinit_config['user.user-data'] | Cloud-init user-data | False | 
+| cloudinit_config['user.meta-data'] | Cloud-init meta-data | False |
+| resource_pool | Resource Pool to deploy to. | False |
+| networks | Mapping of OVF network name, to the vCenter network name. **default "{u'VM Network':u'{{ vm_net_name }}'}"** | False |
+| vcenter_destination_folder | Absolute path of folder to place the virtual machine vCenter **default: "Ansible Managed VMs"** | False |
+| vm_state | Define [state](https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_powerstate_module.html#parameter-state) of the fresh created vm. This role starts the vm after updating the vm-parameters. **default: "poweredoff"** | False |
+| vm_guestid | Define the [type](https://docs.vmware.com/en/VMware-HCX/4.2/hcx-user-guide/GUID-D4FFCBD6-9FEC-44E5-9E26-1BD0A2A81389.html) of the fresh created vm. **default: "ubuntu64Guest"** | False |
+| vm_disk_gb | Disk storage size in gb. **default: 10** | False |
+| vm_disk_type | Type of [disk](ttps://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_module.html#parameter-disk/type). **default: "thin"** | False |
+| vm_hw_ram_mb | Amount of memory in MB. **default: 2048** | False |
+| vm_hw_cpu_n | Number of CPUs for the vm. **default: 2** | False |
+| vm_hw_scsi | SCSI Controllertype **default: "paravirtual"** | False |
+| vm_net_device_type | [Virtual network device](https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_module.html#parameter-networks/device_type). **default: "vmxnet3"** | False |
+| vm_allow_duplicates | Whether or not to allow duplicate VM names. ESXi allows duplicates, vCenter may not. **default: False** | False |
+| ova_rescue_password | Set rescue password. If cloud-init fais this is the password for default user ubuntu. See [docs](https://git.launchpad.net/livecd-rootfs/tree/live-build/ubuntu-cpc/hooks.d/base/ovf/ubuntu-ova-v1-cloudcfg-vmdk.tmpl) **default: 'RANDOM'** | False |
 
 
 
