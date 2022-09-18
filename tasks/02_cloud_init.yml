@@ -1,18 +1,18 @@
 ---
 - name: check if role exist
   stat:
-    path: roles/ansible-cloud-init
+    path: roles/ansible_role_cloud_init
   delegate_to: localhost
-  register: role_ansible_cloud_init
+  register: ansible_role_cloud_init
 
-- name: no role ansible-cloud-init found
+- name: no role ansible_role_cloud_init found
   ansible.builtin.fail:
-    msg: "roles/ansible-cloud-init not found so don't run that role"
+    msg: "roles/ansible_role_cloud_init not found so don't run that role"
   ignore_errors: True
-  when: not role_ansible_cloud_init.stat.exists
+  when: not ansible_role_cloud_init.stat.exists
 
 - name: start Cloudinit
   ansible.builtin.include_role:
-    name: ansible-cloud-init
-  when: role_ansible_cloud_init.stat.exists
+    name: ansible_role_cloud_init
+  when: ansible_role_cloud_init.stat.exists
 ...
