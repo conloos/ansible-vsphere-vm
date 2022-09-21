@@ -2,10 +2,10 @@
 - name: Fail if no FS-path or URL to image is provided
   ansible.builtin.fail:
     msg: "No path or url to ova is provided. Please set 'vm_path_to_ova' or 'ci_image_name' and consult the 'README.md'."
-  when: (vm_path_to_ova is not defined or vm_path_to_ova|length==0) and (ci_image_name is not defined)
+  when: (vm_path_to_ova is not defined or vm_path_to_ova | length == 0) and (ci_image_name is not defined)
 
 - name: Verify that required parameters are set
-  assert:
+  ansible.builtin.assert:
     that:
       - '{{ item.key }} is defined'
       - '{{ item.key }} | length > 0'
@@ -20,7 +20,7 @@
     - { key: vm_net_name }
 
 - name: Verify that required parameters are set - bool
-  assert:
+  ansible.builtin.assert:
     that:
       - '{{ item.key }} is defined'
       - '{{ item.key }} is boolean'

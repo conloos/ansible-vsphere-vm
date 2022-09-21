@@ -13,21 +13,23 @@ argument_specs:
       cloudinit_fqdn:
         type: str
         description: FQDN of the system.
-        required: True
-      ci_download_url: 
+        required: true
+      ci_download_url:
         type: str
         default: "https://cloud-images.ubuntu.com"
-        description: URL to download image 
-      ci_dist_release_date: 
+        description: URL to download image
+      ci_dist_release_date:
         type: str
         default: "current"
         description: Versionstag to downlad
-      ci_distname: 
+      ci_distname:
         type: str
         description: Distributions version
-      ci_image_name: 
+      ci_image_name:
         type: str
-        description: Image to download eg:"{{ ci_distname }}-server-cloudimg-amd64.ova". Attention currently only vmdk and ova is supported. Other versions may work.
+        description:
+          Image to download eg:"{{ ci_distname }}-server-cloudimg-amd64.ova".
+          Attention currently only vmdk and ova is supported. Other versions may work.
       ci_cloudimage_url:
         type: str
         description: Compound URL to download the image.
@@ -57,27 +59,27 @@ argument_specs:
       vcenter_hostname:
         type: str
         description: The hostname or IP address of the vSphere vCenter or ESXi server.
-        required: True
+        required: true
       vcenter_username:
         type: str
         description: The username of the vSphere vCenter or ESXi server.
-        required: True
+        required: true
       vcenter_password:
         type: str
         description: The password of the vSphere vCenter or ESXi server.
-        required: True
+        required: true
       vcenter_datacenter:
         type: str
         description: Datacenter to deploy to.
-        required: True
+        required: true
       vcenter_cluster:
         type: str
         description: Cluster to deploy to.
-        required: True
+        required: true
       esxi_host_fqdn:
         type: str
         description: ESXi Host to deploy to.
-        required: True
+        required: true
       vcenter_destination_folder:
         type: str
         default: "Ansible Managed VMs"
@@ -85,15 +87,20 @@ argument_specs:
       vcenter_validate_certs:
         type: bool
         description: Allows connection when SSL certificates are not valid.
-        required: True
-      vm_state: 
+        required: true
+      vm_state:
         type: str
         default: "poweredoff"
-        description:  Define state of the fresh created vm. See at This role starts the vm after updating the vm-parameters. https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_powerstate_module.html#parameter-state
-      vm_guestid: 
+        description:
+          Define state of the fresh created vm.
+          See at This role starts the vm after updating the vm-parameters.
+          https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_powerstate_module.html#parameter-state
+      vm_guestid:
         type: str
         default: "ubuntu64Guest"
-        description: Define the type of the fresh created vm. See at https://docs.vmware.com/en/VMware-HCX/4.2/hcx-user-guide/GUID-D4FFCBD6-9FEC-44E5-9E26-1BD0A2A81389.html
+        description:
+          Define the type of the fresh created vm.
+          See at https://docs.vmware.com/en/VMware-HCX/4.2/hcx-user-guide/GUID-D4FFCBD6-9FEC-44E5-9E26-1BD0A2A81389.html
       vm_disk_gb:
         type: int
         default: 10
@@ -105,7 +112,7 @@ argument_specs:
       vm_disk_datastore:
         type: str
         description: Specify datastore or datastore cluster to provision virtual machine.
-        required: True
+        required: true
       vm_hw_ram_mb:
         type: int
         default: 2048
@@ -121,11 +128,13 @@ argument_specs:
       vm_net_name:
         type: str
         description: Name of the portgroup or distributed virtual portgroup for this interface.
-        required: True
+        required: true
       vm_net_device_type:
         type: str
         default: "vmxnet3"
-        description: Virtual network device. See https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_module.html#parameter-networks/device_type
+        description:
+          Virtual network device.
+          See https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_module.html#parameter-networks/device_type
       vm_path_to_ova:
         type: str
         description: Local FS-path to ova image.
@@ -139,12 +148,15 @@ argument_specs:
       pyvmomi_version:
         type: str
         default: "1.0.1"
-        description: Version of pyvmomi. 
-      jmespath_version: 
+        description: Version of pyvmomi.
+      jmespath_version:
         type: str
         default: "7.0.3"
         description: Version of pyvmomi to connect to vCenter.
       ova_rescue_password:
         type: str
         default: 'RANDOM'
-        description: rescue password. If cloud-init fais this is the password for default user ubuntu. See https://git.launchpad.net/livecd-rootfs/tree/live-build/ubuntu-cpc/hooks.d/base/ovf/ubuntu-ova-v1-cloudcfg-vmdk.tmpl
+        description:
+          Rescue password.
+          If cloud-init fais this is the password for default user ubuntu.
+          See https://git.launchpad.net/livecd-rootfs/tree/live-build/ubuntu-cpc/hooks.d/base/ovf/ubuntu-ova-v1-cloudcfg-vmdk.tmpl

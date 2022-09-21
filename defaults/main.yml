@@ -1,6 +1,6 @@
 ---
 vcenter_destination_folder: "Ansible Managed VMs"
-vcenter_validate_certs: False
+vcenter_validate_certs: false
 vm_state: "poweredoff" # https://docs.ansible.com/ansible/latest/collections/community/vmware/vmware_guest_powerstate_module.html#parameter-state
 vm_guestid: "ubuntu64Guest" # https://docs.vmware.com/en/VMware-HCX/4.2/hcx-user-guide/GUID-D4FFCBD6-9FEC-44E5-9E26-1BD0A2A81389.html
 vm_disk_gb: 10
@@ -9,7 +9,7 @@ vm_hw_ram_mb: 2048
 vm_hw_cpu_n: 2
 vm_hw_scsi: "paravirtual"
 vm_net_device_type: "vmxnet3"
-vm_allow_duplicates: False
+vm_allow_duplicates: false
 
 # choose distribution and source
 ci_download_url: "https://cloud-images.ubuntu.com"

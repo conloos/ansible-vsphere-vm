@@ -10,32 +10,32 @@
       delegate_to: localhost
 
       # download checksum-file
-    - name: download checksumfile
+    - name: Download checksumfile
       ansible.builtin.get_url:
         url: "{{ ci_cloudimage_checksum }}"
         dest: "{{ tempfilepath.path }}"
       delegate_to: localhost
 
-    - name: set_fact - read checksumfile to var sha256sum
+    - name: Set_fact - read checksumfile to var sha256sum
       ansible.builtin.set_fact:
-        sha256sum: "{{ lookup( 'file', '{{ tempfilepath.path }}/SHA256SUMS' ) }}"
+        sha256sum: "{{ lookup( 'file', '{{ tempfilepath.path }}/SHA256SUMS') }}"
       delegate_to: localhost
 
-    - name: set_fact - build regex search string
+    - name: Set_fact - build regex search string
       set_fact:
-        regex_search_string: "(.{64})\\s\\*{{ ci_image_name | replace('.', '\\.')}}"
+        regex_search_string: "(.{64})\\s\\*{{ ci_image_name | replace('.', '\\.') }}"
 
       # a bit of regex dark magic
       # one file with a lot of checksums
       # target-line: bf1d8a9ab3e3005fd3d50c6d094b96bf9345b2f287e38d22cf98d2b798e2cb2a *impish-server-cloudimg-amd64.ova
       # '\\1' -> group1
-    - name: set_fact - file chechsum
-      set_fact:
+    - name: Set_fact - file chechsum
+      ansible.builtin.set_fact:
         fileSHA256: "{{ sha256sum | split('\n') | regex_search( regex_search_string | string, '\\1') }}"
       delegate_to: localhost
 
       # download image
-    - name: download latest image
+    - name: Download latest image
       ansible.builtin.get_url:
         url: "{{ ci_cloudimage_url }}"
         dest: "{{ tempfilepath.path }}/{{ ci_image_name }}"
@@ -43,7 +43,7 @@
         force: False
       delegate_to: localhost
 
-    - name: create list of files in temp directory
+    - name: Create list of files in temp directory
       ansible.builtin.find:
         path: "{{ tempfilepath.path }}"
       register: ls_dir
