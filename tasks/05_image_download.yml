@@ -1,5 +1,5 @@
 ---
-- name: download and validate image
+- name: Download and validate image
   block:
       # mkdir template
     - name: Create temp directory
@@ -14,15 +14,18 @@
       ansible.builtin.get_url:
         url: "{{ ci_cloudimage_checksum }}"
         dest: "{{ tempfilepath.path }}"
+        owner: "{{ local_user }}"
+        group: "{{ local_group }}"
+        mode: '0660'
       delegate_to: localhost
 
     - name: Set_fact - read checksumfile to var sha256sum
       ansible.builtin.set_fact:
-        sha256sum: "{{ lookup( 'file', '{{ tempfilepath.path }}/SHA256SUMS') }}"
+        sha256sum: "{{ lookup('file', '{{ tempfilepath.path }}/SHA256SUMS') }}"
       delegate_to: localhost
 
     - name: Set_fact - build regex search string
-      set_fact:
+      ansible.builtin.set_fact:
         regex_search_string: "(.{64})\\s\\*{{ ci_image_name | replace('.', '\\.') }}"
 
       # a bit of regex dark magic
@@ -31,7 +34,7 @@
       # '\\1' -> group1
     - name: Set_fact - file chechsum
       ansible.builtin.set_fact:
-        fileSHA256: "{{ sha256sum | split('\n') | regex_search( regex_search_string | string, '\\1') }}"
+        file_sha_256: "{{ sha256sum | split('\n') | regex_search( regex_search_string | string, '\\1') }}"
       delegate_to: localhost
 
       # download image
@@ -39,8 +42,11 @@
       ansible.builtin.get_url:
         url: "{{ ci_cloudimage_url }}"
         dest: "{{ tempfilepath.path }}/{{ ci_image_name }}"
-        checksum: sha256:"{{ fileSHA256 }}"
-        force: False
+        checksum: sha256:"{{ file_sha_256 }}"
+        force: false
+        owner: "{{ local_user }}"
+        group: "{{ local_group }}"
+        mode: '0660'
       delegate_to: localhost
 
     - name: Create list of files in temp directory
@@ -48,5 +54,5 @@
         path: "{{ tempfilepath.path }}"
       register: ls_dir
       delegate_to: localhost
-  when: vm_path_to_ova is not defined or vm_path_to_ova | length==0
+  when: vm_path_to_ova is not defined or vm_path_to_ova | length == 0
 ...

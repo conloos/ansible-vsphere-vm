@@ -1,6 +1,6 @@
 ---
-- name: configure disks
-  tags: configure-vm
+- name: Configure disks
+  tags: Configure-vm
   vmware_guest_disk:
     hostname: "{{ vcenter_hostname | default(omit) }}"
     username: "{{ vcenter_username | default(omit) }}"

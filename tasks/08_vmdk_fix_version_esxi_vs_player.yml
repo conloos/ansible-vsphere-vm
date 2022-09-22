@@ -1,9 +1,9 @@
 ---
 # source: https://kb.vmware.com/s/article/1028943
 # only the root user is permitted to connect sothis is untestd please report the success
-- name: convert vmware-player vmdk to esxi vmdk
-  ansible.builtin.shell:
-    cmd: /bin/vmkfstools -i /vmfs/volumes/{{ vm_disk_datastore}}/{{ cloudinit_fqdn }}/{{ cloudinit_fqdn }}.vmware-player.vmdk /vmfs/volumes/{{ vm_disk_datastore}}/{{ cloudinit_fqdn }}/{{ cloudinit_fqdn }}.vmdk
+- name: Convert vmware-player vmdk to esxi vmdk
+  ansible.builtin.command:
+    cmd: /bin/vmkfstools -i /vmfs/volumes/{{ vm_disk_datastore }}/{{ cloudinit_fqdn }}/{{ cloudinit_fqdn }}.vmware-player.vmdk /vmfs/volumes/{{ vm_disk_datastore }}/{{ cloudinit_fqdn }}/{{ cloudinit_fqdn }}.vmdk  # noqa yaml
   delegate_to: "{{ vcenter_cluster }}"
-  when: "{{'.vmdk' in ci_image_name }}"
+  when: "'.vmdk' in ci_image_name"
 ...

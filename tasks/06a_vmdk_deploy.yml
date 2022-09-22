@@ -1,5 +1,5 @@
 ---
-- name: vmdk - copy image to datastore
+- name: VMDK - copy image to datastore
   community.vmware.vsphere_copy:
     hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
@@ -8,7 +8,7 @@
     datacenter: "{{ vcenter_datacenter }}"
     datastore: "{{ vm_disk_datastore }}"
     path: "{{ cloudinit_fqdn }}/{{ cloudinit_fqdn }}.vmware-player.vmdk"
-    validate_certs: False
+    validate_certs: false
   delegate_to: localhost
-  when: "{{'.vmdk' in ci_image_name }}"
+  when: "'.vmdk' in ci_image_name"
 ...

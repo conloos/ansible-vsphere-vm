@@ -10,7 +10,7 @@ galaxy_info:
   platforms:
     - name: Ubuntu
       versions:
-        - "impisch"
+        - "impish"
         - "jammy"
   galaxy_tags: []
 dependencies: []
