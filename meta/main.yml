@@ -13,5 +13,6 @@ galaxy_info:
         - "impish"
         - "jammy"
   galaxy_tags: []
-dependencies: []
+dependencies:
+  - ansible_role_cloud_init
 ...
