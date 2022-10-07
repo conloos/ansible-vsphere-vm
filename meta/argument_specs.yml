@@ -80,6 +80,9 @@ argument_specs:
         type: str
         description: ESXi Host to deploy to.
         required: true
+      esx_datastore:
+        type: str
+        description: Specify datastore or datastore cluster to provision virtual machine.
       vcenter_destination_folder:
         type: str
         default: "Ansible Managed VMs"
