@@ -3,13 +3,15 @@
 # So that the data are not written unprotected in the file system, the rights must be restricted.
 # Therefore, the currently running deployment user is determined.
 - name: Get local user
-  ansible.builtin.command: "/usr/bin/id -un"
+  ansible.builtin.command:
+    cmd: "/usr/bin/id -un"
   changed_when: false
   delegate_to: localhost
   register: whoami_user
 
 - name: Get local group
-  ansible.builtin.command: "/usr/bin/id -gn"
+  ansible.builtin.command: 
+    cmd: "/usr/bin/id -gn"
   changed_when: false
   delegate_to: localhost
   register: whoami_group
