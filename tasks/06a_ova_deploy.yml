@@ -20,8 +20,8 @@
     validate_certs: "{{ vcenter_validate_certs }}"
     datacenter: "{{ vcenter_datacenter }}"
     datastore: "{{ vm_disk_datastore }}"
-    # cluster: "{{ vcenter_cluster | default(omit) }}"
-    esxi_hostname: "{{ esxi_host_fqdn | default(omit) }}" # fix https://github.com/ansible-collections/community.vmware/pull/687
+    cluster: "{{ vcenter_cluster | default(omit) }}"
+    # esxi_hostname: "{{ esxi_host_fqdn | default(omit) }}" # fix https://github.com/ansible-collections/community.vmware/pull/687
     folder: "{{ vcenter_datacenter }}/vm/{{ vcenter_destination_folder | default(omit) }}" # The full path DC/vm/folder have to provide
     resource_pool: "{{ venter_resource_pool | default(omit) }}"
     networks: "{u'VM Network': u'{{ vm_net_name }}'}"
